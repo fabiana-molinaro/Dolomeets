@@ -13,9 +13,9 @@ export function LoginView() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // -----------------------------
-  // OCR.SPACE VALIDATION FUNCTION
-  // -----------------------------
+  // -----------------------------------------------------
+  // OCR.SPACE VALIDATION — FIXED TO ACCEPT REAL UNIBZ CARD
+  // -----------------------------------------------------
   async function validateStudentCardWithOCR(file: File) {
     const apiKey = "YOUR_OCR_SPACE_API_KEY";
 
@@ -31,20 +31,25 @@ export function LoginView() {
     });
 
     const data = await response.json();
-    const text = data?.ParsedResults?.[0]?.ParsedText || "";
+    const text = (data?.ParsedResults?.[0]?.ParsedText || "").toLowerCase();
 
+    // Accept ANY of the 3 official university names + fallbacks
     const isUnibz =
-      text.includes("Free University of Bozen-Bolzano") ||
-      text.includes("Libera Università di Bolzano");
+      text.includes("universität bozen") || // German
+      text.includes("universita di bolzano") || // Italian
+      text.includes("free university of bozen") || // English
+      text.includes("bozen") || // fallback
+      text.includes("bolzano"); // fallback
 
-    const hasMatricola = /\b\d{8}\b/.test(text);
+    // Your matricola is 22533 → 5 digits
+    const hasMatricola = /\b\d{4,6}\b/.test(text);
 
     return isUnibz && hasMatricola;
   }
 
-  // -----------------------------
+  // -----------------------------------------------------
   // FILE UPLOAD HANDLING
-  // -----------------------------
+  // -----------------------------------------------------
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -73,9 +78,9 @@ export function LoginView() {
     setPreview(null);
   };
 
-  // -----------------------------
+  // -----------------------------------------------------
   // LOGIN HANDLING
-  // -----------------------------
+  // -----------------------------------------------------
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -98,9 +103,7 @@ export function LoginView() {
 
     setIsLoading(true);
 
-    // -----------------------------
     // STUDENT CARD VALIDATION
-    // -----------------------------
     if (authMethod === "studentCard") {
       const valid = await validateStudentCardWithOCR(studentCard);
 
@@ -111,9 +114,7 @@ export function LoginView() {
       }
     }
 
-    // -----------------------------
     // CONTINUE LOGIN FLOW
-    // -----------------------------
     setIsLoading(false);
     const onboardingComplete = localStorage.getItem("onboardingComplete");
 
@@ -124,9 +125,9 @@ export function LoginView() {
     }
   };
 
-  // -----------------------------
+  // -----------------------------------------------------
   // UI
-  // -----------------------------
+  // -----------------------------------------------------
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md">
