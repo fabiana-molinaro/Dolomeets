@@ -43,6 +43,30 @@ export function LoginView() {
     setStudentCard(null);
     setPreview(null);
   };
+  async function validateStudentCard(base64Image: string) {
+  const formData = new FormData();
+  formData.append("apikey", "YOUR_OCR_SPACE_API_KEY");
+  formData.append("base64Image", `data:image/jpeg;base64,${base64Image}`);
+  formData.append("language", "eng");
+
+  const response = await fetch("https://api.ocr.space/parse/image", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  const text = data?.ParsedResults?.[0]?.ParsedText || "";
+
+  const isUnibz =
+    text.includes("Free University of Bozen-Bolzano") ||
+    text.includes("Libera Università di Bolzano");
+
+  const hasMatricola = /\b\d{8}\b/.test(text);
+
+  return isUnibz && hasMatricola;
+}
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
