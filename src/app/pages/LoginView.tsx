@@ -224,6 +224,26 @@ export function LoginView() {
                   htmlFor="studentCard"
                   className="w-full border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-[#003366] hover:bg-gray-50 transition-all"
                 >
+                  const handleStudentCardLogin = async () => {
+  if (!imageBase64) {
+    Alert.alert("Error", "Please upload a photo of your student card.");
+    return;
+  }
+
+  const valid = await validateStudentCard(imageBase64);
+
+  if (!valid) {
+    Alert.alert(
+      "Invalid Card",
+      "This is not a valid unibz student card. Please try again."
+    );
+    return;
+  }
+
+  // Continue with login
+  navigation.navigate("Home");
+};
+
                   <div
                     className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
                     style={{ backgroundColor: "#F0F4FF" }}
