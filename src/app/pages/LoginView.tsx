@@ -17,7 +17,7 @@ export function LoginView() {
   // OCR.SPACE VALIDATION — FIXED TO ACCEPT REAL UNIBZ CARD
   // -----------------------------------------------------
 async function validateStudentCardWithOCR(file: File) {
-  const apiKey = "YOUR_OCR_SPACE_API_KEY";
+  const apiKey = "K84605656188957";
 
   const formData = new FormData();
   formData.append("apikey", apiKey);
