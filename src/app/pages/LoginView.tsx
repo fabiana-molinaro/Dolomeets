@@ -35,15 +35,16 @@ export function LoginView() {
 
     // Accept ANY of the 3 official university names + fallbacks
     const isUnibz =
-      text.includes("universität bozen") || // German
-      text.includes("universita di bolzano") || // Italian
-      text.includes("free university of bozen") || // English
-      text.includes("bozen") || // fallback
-      text.includes("bolzano"); // fallback
+      text.includes("bozen") ||
+      text.includes("bolzano") ||
+      text.includes("university") ||
+      text.includes("universita") ||
+      text.includes("universitat");
+
 
     // Your matricola is 22533 → 5 digits
-    const hasMatricola = /\b\d{4,6}\b/.test(text);
-
+const hasMatricola = /\b\d{3,6}\b/.test(text);
+      
     return isUnibz && hasMatricola;
   }
 
