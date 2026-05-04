@@ -31,4 +31,6 @@ export const router = createBrowserRouter([
     path: "*",
     Component: NotFound,
   },
-]);
+], {
+  basename: process.env.NODE_ENV === 'production' ? '/Dolomeets' : '/',
+});
