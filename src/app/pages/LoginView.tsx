@@ -16,37 +16,42 @@ export function LoginView() {
   // -----------------------------------------------------
   // OCR.SPACE VALIDATION — FIXED TO ACCEPT REAL UNIBZ CARD
   // -----------------------------------------------------
-  async function validateStudentCardWithOCR(file: File) {
-    const apiKey = "YOUR_OCR_SPACE_API_KEY";
+async function validateStudentCardWithOCR(file: File) {
+  const apiKey = "YOUR_OCR_SPACE_API_KEY";
 
-    const formData = new FormData();
-    formData.append("apikey", apiKey);
-    formData.append("language", "eng");
-    formData.append("isOverlayRequired", "false");
-    formData.append("file", file);
+  const formData = new FormData();
+  formData.append("apikey", apiKey);
+  formData.append("language", "eng");
+  formData.append("isOverlayRequired", "false");
+  formData.append("file", file);
 
-    const response = await fetch("https://api.ocr.space/parse/image", {
-      method: "POST",
-      body: formData,
-    });
+  const response = await fetch("https://api.ocr.space/parse/image", {
+    method: "POST",
+    body: formData,
+  });
 
-    const data = await response.json();
-    const text = (data?.ParsedResults?.[0]?.ParsedText || "").toLowerCase();
+  const data = await response.json();
+  const text = (data?.ParsedResults?.[0]?.ParsedText || "")
+    .toLowerCase()
+    .replace(/\s+/g, " "); // normalizza gli spazi
 
-    // Accept ANY of the 3 official university names + fallbacks
-    const isUnibz =
-      text.includes("bozen") ||
-      text.includes("bolzano") ||
-      text.includes("university") ||
-      text.includes("universita") ||
-      text.includes("universitat");
+  console.log("OCR TEXT:", text);
 
+  // Riconoscimento molto tollerante
+  const isUnibz =
+    text.includes("bozen") ||
+    text.includes("bolzano") ||
+    text.includes("freie universitat") ||
+    text.includes("libera universita") ||
+    text.includes("free university") ||
+    text.includes("student");
 
-    // Your matricola is 22533 → 5 digits
-const hasMatricola = /\b\d{3,6}\b/.test(text);
-      
-    return isUnibz && hasMatricola;
-  }
+  // Matricola: 3–6 cifre (la tua è 22533)
+  const hasMatricola = /\b\d{3,6}\b/.test(text);
+
+  return isUnibz && hasMatricola;
+}
+
 
   // -----------------------------------------------------
   // FILE UPLOAD HANDLING
