@@ -1,0 +1,61 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Import Leaflet CSS */
+@import 'leaflet/dist/leaflet.css';
+
+/* Global map styles */
+.leaflet-container {
+  font-family: inherit;
+}
+
+/* Ensure maps take full height */
+.leaflet-container,
+.leaflet-pane,
+.leaflet-tile-pane {
+  z-index: 0;
+}
+
+/* Fix for custom marker visibility */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .leaflet-control-attribution {
+    font-size: 10px;
+  }
+}
+
+/* Ensure full height for root containers */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Smooth scrolling for all scrollable areas */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Improve webkit scrolling on mobile */
+.overflow-auto,
+.overflow-y-auto,
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar for cleaner look while maintaining scroll functionality */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

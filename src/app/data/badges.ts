@@ -1,0 +1,340 @@
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  requirement: number;
+  category: "events" | "social" | "organizer" | "special";
+}
+
+export const badges: Badge[] = [
+  {
+    id: "first_event",
+    name: "First Step",
+    description: "Attend your first event",
+    icon: "🎯",
+    color: "#FF8C00",
+    requirement: 1,
+    category: "events",
+  },
+  {
+    id: "social_butterfly",
+    name: "Social Butterfly",
+    description: "Attend 5 events",
+    icon: "🦋",
+    color: "#FF8C00",
+    requirement: 5,
+    category: "events",
+  },
+  {
+    id: "event_enthusiast",
+    name: "Event Enthusiast",
+    description: "Attend 10 events",
+    icon: "⭐",
+    color: "#FFD700",
+    requirement: 10,
+    category: "events",
+  },
+  {
+    id: "super_attendee",
+    name: "Super Attendee",
+    description: "Attend 25 events",
+    icon: "🏆",
+    color: "#FFD700",
+    requirement: 25,
+    category: "events",
+  },
+  {
+    id: "event_legend",
+    name: "Event Legend",
+    description: "Attend 50 events",
+    icon: "👑",
+    color: "#9C27B0",
+    requirement: 50,
+    category: "events",
+  },
+  {
+    id: "networker",
+    name: "Networker",
+    description: "Attend events with 100+ total attendees",
+    icon: "🤝",
+    color: "#2196F3",
+    requirement: 100,
+    category: "social",
+  },
+  {
+    id: "early_bird",
+    name: "Early Bird",
+    description: "Attend 3 morning events (before 10 AM)",
+    icon: "🌅",
+    color: "#FF9800",
+    requirement: 3,
+    category: "special",
+  },
+  {
+    id: "night_owl",
+    name: "Night Owl",
+    description: "Attend 3 evening events (after 7 PM)",
+    icon: "🦉",
+    color: "#3F51B5",
+    requirement: 3,
+    category: "special",
+  },
+  {
+    id: "tech_explorer",
+    name: "Tech Explorer",
+    description: "Attend 5 tech events",
+    icon: "💻",
+    color: "#00BCD4",
+    requirement: 5,
+    category: "events",
+  },
+  {
+    id: "outdoor_adventurer",
+    name: "Outdoor Adventurer",
+    description: "Attend 5 outdoor events",
+    icon: "🏔️",
+    color: "#4CAF50",
+    requirement: 5,
+    category: "events",
+  },
+  {
+    id: "study_champion",
+    name: "Study Champion",
+    description: "Attend 5 study events",
+    icon: "📚",
+    color: "#673AB7",
+    requirement: 5,
+    category: "events",
+  },
+  {
+    id: "event_organizer",
+    name: "Event Organizer",
+    description: "Organize your first event",
+    icon: "🎪",
+    color: "#E91E63",
+    requirement: 1,
+    category: "organizer",
+  },
+  {
+    id: "community_builder",
+    name: "Community Builder",
+    description: "Organize 5 events",
+    icon: "🏗️",
+    color: "#E91E63",
+    requirement: 5,
+    category: "organizer",
+  },
+  {
+    id: "noi_techpark_fan",
+    name: "NOI Techpark Fan",
+    description: "Attend 10 events at NOI Techpark",
+    icon: "🚀",
+    color: "#00BCD4",
+    requirement: 10,
+    category: "special",
+  },
+  {
+    id: "weekend_warrior",
+    name: "Weekend Warrior",
+    description: "Attend 5 weekend events",
+    icon: "🎉",
+    color: "#FF5722",
+    requirement: 5,
+    category: "special",
+  },
+  {
+    id: "language_learner",
+    name: "Language Learner",
+    description: "Attend 3 language exchange events",
+    icon: "🗣️",
+    color: "#9C27B0",
+    requirement: 3,
+    category: "events",
+  },
+  {
+    id: "fitness_enthusiast",
+    name: "Fitness Enthusiast",
+    description: "Attend 5 sports events",
+    icon: "💪",
+    color: "#4CAF50",
+    requirement: 5,
+    category: "events",
+  },
+  {
+    id: "social_star",
+    name: "Social Star",
+    description: "Attend 10 social events",
+    icon: "✨",
+    color: "#FF8C00",
+    requirement: 10,
+    category: "social",
+  },
+  {
+    id: "dedicated_learner",
+    name: "Dedicated Learner",
+    description: "Attend 15 study events",
+    icon: "🎓",
+    color: "#673AB7",
+    requirement: 15,
+    category: "events",
+  },
+  {
+    id: "innovation_seeker",
+    name: "Innovation Seeker",
+    description: "Attend 15 tech events",
+    icon: "💡",
+    color: "#00BCD4",
+    requirement: 15,
+    category: "events",
+  },
+  {
+    id: "nature_lover",
+    name: "Nature Lover",
+    description: "Attend 10 outdoor events",
+    icon: "🌲",
+    color: "#4CAF50",
+    requirement: 10,
+    category: "events",
+  },
+  {
+    id: "consistent_attendee",
+    name: "Consistent Attendee",
+    description: "Attend events 5 weeks in a row",
+    icon: "📅",
+    color: "#2196F3",
+    requirement: 5,
+    category: "special",
+  },
+  {
+    id: "diversity_champion",
+    name: "Diversity Champion",
+    description: "Attend events from all 6 categories",
+    icon: "🌈",
+    color: "#E91E63",
+    requirement: 6,
+    category: "special",
+  },
+  {
+    id: "super_organizer",
+    name: "Super Organizer",
+    description: "Organize 10 events",
+    icon: "🎯",
+    color: "#E91E63",
+    requirement: 10,
+    category: "organizer",
+  },
+  {
+    id: "popular_event",
+    name: "Popular Event",
+    description: "Organize an event with 50+ attendees",
+    icon: "🌟",
+    color: "#FFD700",
+    requirement: 1,
+    category: "special",
+  },
+  {
+    id: "bolzano_explorer",
+    name: "Bolzano Explorer",
+    description: "Attend events at 10 different locations",
+    icon: "🧭",
+    color: "#FF9800",
+    requirement: 10,
+    category: "special",
+  },
+  {
+    id: "unibz_champion",
+    name: "Unibz Champion",
+    description: "Attend 20 events at unibz",
+    icon: "🏫",
+    color: "#003366",
+    requirement: 20,
+    category: "special",
+  },
+  {
+    id: "monthly_regular",
+    name: "Monthly Regular",
+    description: "Attend at least 4 events in one month",
+    icon: "🗓️",
+    color: "#3F51B5",
+    requirement: 4,
+    category: "special",
+  },
+  {
+    id: "team_player",
+    name: "Team Player",
+    description: "Attend 5 team-based events",
+    icon: "🤜🤛",
+    color: "#00BCD4",
+    requirement: 5,
+    category: "social",
+  },
+  {
+    id: "cultural_explorer",
+    name: "Cultural Explorer",
+    description: "Attend 5 cultural or international events",
+    icon: "🌍",
+    color: "#9C27B0",
+    requirement: 5,
+    category: "social",
+  },
+  {
+    id: "mentor",
+    name: "Mentor",
+    description: "Help organize 3 events as a co-host",
+    icon: "🧑‍🏫",
+    color: "#673AB7",
+    requirement: 3,
+    category: "organizer",
+  },
+  {
+    id: "speed_demon",
+    name: "Speed Demon",
+    description: "Attend 3 events in one day",
+    icon: "⚡",
+    color: "#FFEB3B",
+    requirement: 3,
+    category: "special",
+  },
+  {
+    id: "century_club",
+    name: "Century Club",
+    description: "Attend 100 events total",
+    icon: "💯",
+    color: "#9C27B0",
+    requirement: 100,
+    category: "events",
+  },
+  {
+    id: "platinum_member",
+    name: "Platinum Member",
+    description: "Reach level 8",
+    icon: "💎",
+    color: "#E5E4E2",
+    requirement: 8,
+    category: "special",
+  },
+];
+
+export function calculateEarnedBadges(
+  eventsAttended: number,
+  eventsOrganized: number
+): string[] {
+  const earned: string[] = [];
+
+  // Simple logic based on events attended and organized
+  badges.forEach((badge) => {
+    if (badge.category === "events") {
+      if (eventsAttended >= badge.requirement) {
+        earned.push(badge.id);
+      }
+    } else if (badge.category === "organizer") {
+      if (eventsOrganized >= badge.requirement) {
+        earned.push(badge.id);
+      }
+    }
+  });
+
+  return earned;
+}
