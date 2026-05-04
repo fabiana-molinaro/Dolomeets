@@ -22,3 +22,22 @@ export async function scanStudentCard(file: File) {
 
   return text;
 }
+
+/**
+ * Validates if the card is a UniBZ (Free University of Bozen-Bolzano) student card
+ */
+export function isUniBZCard(text: string): boolean {
+  const lowerText = text.toLowerCase();
+  
+  // Check for UniBZ identifiers
+  const unibzIndicators = [
+    "libera università di bolzano",
+    "free university of bozen",
+    "bolzano",
+    "bozen",
+    "unibz",
+    "università libera",
+  ];
+
+  return unibzIndicators.some(indicator => lowerText.includes(indicator));
+}
