@@ -13,24 +13,53 @@ export function LoginView() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // -----------------------------
+  // OCR.SPACE VALIDATION FUNCTION
+  // -----------------------------
+  async function validateStudentCardWithOCR(file: File) {
+    const apiKey = "YOUR_OCR_SPACE_API_KEY";
+
+    const formData = new FormData();
+    formData.append("apikey", apiKey);
+    formData.append("language", "eng");
+    formData.append("isOverlayRequired", "false");
+    formData.append("file", file);
+
+    const response = await fetch("https://api.ocr.space/parse/image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    const text = data?.ParsedResults?.[0]?.ParsedText || "";
+
+    const isUnibz =
+      text.includes("Free University of Bozen-Bolzano") ||
+      text.includes("Libera Università di Bolzano");
+
+    const hasMatricola = /\b\d{8}\b/.test(text);
+
+    return isUnibz && hasMatricola;
+  }
+
+  // -----------------------------
+  // FILE UPLOAD HANDLING
+  // -----------------------------
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check if file is an image
       if (!file.type.startsWith("image/")) {
         alert("Please upload an image file");
         return;
       }
-      
-      // Check file size (max 5MB)
+
       if (file.size > 5 * 1024 * 1024) {
         alert("File size must be less than 5MB");
         return;
       }
-      
+
       setStudentCard(file);
-      
-      // Create preview
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -44,6 +73,9 @@ export function LoginView() {
     setPreview(null);
   };
 
+  // -----------------------------
+  // LOGIN HANDLING
+  // -----------------------------
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -53,7 +85,6 @@ export function LoginView() {
         return;
       }
 
-      // Basic email validation
       if (!email.includes("@")) {
         alert("Please enter a valid email address");
         return;
@@ -67,23 +98,39 @@ export function LoginView() {
 
     setIsLoading(true);
 
-    // Simulate verification process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Check if user has completed onboarding
-      const onboardingComplete = localStorage.getItem("onboardingComplete");
-      if (onboardingComplete === "true") {
-        navigate("/app");
-      } else {
-        navigate("/onboarding");
+    // -----------------------------
+    // STUDENT CARD VALIDATION
+    // -----------------------------
+    if (authMethod === "studentCard") {
+      const valid = await validateStudentCardWithOCR(studentCard);
+
+      if (!valid) {
+        setIsLoading(false);
+        alert("This is not a valid unibz student card.");
+        return;
       }
-    }, 1500);
+    }
+
+    // -----------------------------
+    // CONTINUE LOGIN FLOW
+    // -----------------------------
+    setIsLoading(false);
+    const onboardingComplete = localStorage.getItem("onboardingComplete");
+
+    if (onboardingComplete === "true") {
+      navigate("/app");
+    } else {
+      navigate("/onboarding");
+    }
   };
 
+  // -----------------------------
+  // UI
+  // -----------------------------
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md">
-        {/* Logo/Icon */}
+        {/* Logo */}
         <div className="flex justify-center mb-8">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center"
@@ -105,7 +152,7 @@ export function LoginView() {
           </div>
         </div>
 
-        {/* Welcome Text */}
+        {/* Welcome */}
         <div className="text-center mb-12">
           <h1 className="text-3xl mb-2" style={{ color: "#003366" }}>
             Welcome to Dolomeets
@@ -117,26 +164,29 @@ export function LoginView() {
           </p>
         </div>
 
-        {/* Auth Method Toggle */}
+        {/* Toggle */}
         <div className="mb-8 bg-gray-100 rounded-xl p-1 flex">
           <button
             type="button"
             onClick={() => setAuthMethod("email")}
             className="flex-1 py-3 rounded-lg text-sm transition-all flex items-center justify-center gap-2"
             style={{
-              backgroundColor: authMethod === "email" ? "#003366" : "transparent",
+              backgroundColor:
+                authMethod === "email" ? "#003366" : "transparent",
               color: authMethod === "email" ? "white" : "#003366",
             }}
           >
             <Mail className="w-4 h-4" />
             Email
           </button>
+
           <button
             type="button"
             onClick={() => setAuthMethod("studentCard")}
             className="flex-1 py-3 rounded-lg text-sm transition-all flex items-center justify-center gap-2"
             style={{
-              backgroundColor: authMethod === "studentCard" ? "#003366" : "transparent",
+              backgroundColor:
+                authMethod === "studentCard" ? "#003366" : "transparent",
               color: authMethod === "studentCard" ? "white" : "#003366",
             }}
           >
@@ -145,7 +195,7 @@ export function LoginView() {
           </button>
         </div>
 
-        {/* Login Form */}
+        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-6">
           {authMethod === "email" ? (
             <>
@@ -166,6 +216,7 @@ export function LoginView() {
                   className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-[#003366] focus:outline-none transition-colors"
                 />
               </div>
+
               <div>
                 <label
                   htmlFor="password"
@@ -194,7 +245,6 @@ export function LoginView() {
                 Upload Student Card Photo
               </label>
 
-              {/* Upload Area */}
               {!preview ? (
                 <label
                   htmlFor="studentCard"
@@ -209,9 +259,7 @@ export function LoginView() {
                   <p className="text-sm mb-1" style={{ color: "#003366" }}>
                     Take or upload a photo
                   </p>
-                  <p className="text-xs text-gray-500">
-                    PNG, JPG up to 5MB
-                  </p>
+                  <p className="text-xs text-gray-500">PNG, JPG up to 5MB</p>
                   <input
                     id="studentCard"
                     type="file"
@@ -243,21 +291,12 @@ export function LoginView() {
             type="submit"
             disabled={
               isLoading ||
-              (authMethod === "email" ? !email || !password : !studentCard)
+              (authMethod === "email"
+                ? !email || !password
+                : !studentCard)
             }
             className="w-full py-4 rounded-xl text-white text-base flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ backgroundColor: "#003366" }}
-            onMouseOver={(e) => {
-              const isDisabled =
-                isLoading ||
-                (authMethod === "email" ? !email || !password : !studentCard);
-              if (!isDisabled) {
-                e.currentTarget.style.backgroundColor = "#002244";
-              }
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#003366";
-            }}
           >
             {isLoading ? (
               <>
@@ -274,14 +313,15 @@ export function LoginView() {
                   <Upload className="w-5 h-5" />
                 )}
                 <span>
-                  {authMethod === "email" ? "Sign In" : "Verify & Continue"}
+                  {authMethod === "email"
+                    ? "Sign In"
+                    : "Verify & Continue"}
                 </span>
               </>
             )}
           </button>
         </form>
 
-        {/* Footer Text */}
         <div className="mt-8 text-center">
           <p className="text-xs text-gray-500">
             {authMethod === "email"
